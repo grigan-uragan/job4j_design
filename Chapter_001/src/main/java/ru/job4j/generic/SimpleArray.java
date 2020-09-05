@@ -31,9 +31,8 @@ public class SimpleArray<T> implements Iterable<T> {
     }
 
     public boolean remove(int position) {
-        for (int i = Objects.checkIndex(position, index); i < index - 1; i++) {
-            data[i] = data[i + 1];
-        }
+
+        System.arraycopy(data, position + 1, data, position, index - position - 1);
         index--;
         return true;
     }
