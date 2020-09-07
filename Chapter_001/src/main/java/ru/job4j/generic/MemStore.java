@@ -14,7 +14,7 @@ public class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean replace(String id, T model) {
-        T res = mem.set(indexOf(findById(id)), model);
+        T res = mem.set(indexById(id), model);
         return res != null;
     }
 
@@ -33,7 +33,8 @@ public class MemStore<T extends Base> implements Store<T> {
         return optional.orElse(null);
     }
 
-    public int indexOf(T model) {
+    public int indexById(String id) {
+        T model = findById(id);
         return mem.indexOf(model);
     }
 }
