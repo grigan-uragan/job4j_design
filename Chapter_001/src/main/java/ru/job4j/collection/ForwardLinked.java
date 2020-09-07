@@ -31,7 +31,7 @@ public class ForwardLinked<E> implements Iterable<E> {
     public Iterator<E> iterator() {
         return new Iterator<>() {
 
-            Node<E> node = head;
+            private Node<E> node = head;
             @Override
             public boolean hasNext() {
                 return node != null;
@@ -50,8 +50,8 @@ public class ForwardLinked<E> implements Iterable<E> {
     }
 
     private static class Node<E> {
-        E value;
-        Node<E> next;
+        private E value;
+        private Node<E> next;
 
         public Node(E value, Node<E> next) {
             this.value = value;
