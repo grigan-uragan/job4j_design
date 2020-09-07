@@ -14,8 +14,7 @@ public class MemStore<T extends Base> implements Store<T> {
 
     @Override
     public boolean replace(String id, T model) {
-        int index = mem.indexOf(findById(id));
-        T res = mem.set(index, model);
+        T res = mem.set(indexOf(findById(id)), model);
         return res != null;
     }
 
@@ -32,5 +31,9 @@ public class MemStore<T extends Base> implements Store<T> {
                 .filter(x -> x.getId().equals(id))
                 .findFirst();
         return optional.orElse(null);
+    }
+
+    public int indexOf(T model) {
+        return mem.indexOf(model);
     }
 }
