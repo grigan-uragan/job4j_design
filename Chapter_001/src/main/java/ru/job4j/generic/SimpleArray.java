@@ -39,11 +39,11 @@ public class SimpleArray<T> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             private int point = 0;
             @Override
             public boolean hasNext() {
-                return point != index;
+                return point < index;
             }
 
             @Override

@@ -34,7 +34,11 @@ public class MemStore<T extends Base> implements Store<T> {
     }
 
     public int indexById(String id) {
-        T model = findById(id);
-        return mem.indexOf(model);
+        for (int i = 0; i < mem.size(); i++) {
+            if (mem.get(i).getId().equals(id)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
