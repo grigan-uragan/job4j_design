@@ -2,7 +2,7 @@ package ru.job4j.collection;
 
 import java.util.Iterator;
 
-public class SimpleSet<T> implements Iterable<T>{
+public class SimpleSet<T> implements Iterable<T> {
     private final SimpleArray<T> store = new SimpleArray<>();
     private int size = 0;
 
