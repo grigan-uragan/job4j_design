@@ -11,4 +11,8 @@ public class SimpleStack<T>  {
     public T pop() {
         return forwardLinked.deleteLast();
     }
+
+    public boolean isEmpty() {
+        return forwardLinked.isEmpty();
+    }
 }

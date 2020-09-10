@@ -79,4 +79,8 @@ public class ForwardLinked<E> implements Iterable<E> {
             this.next = next;
         }
     }
+
+    public boolean isEmpty() {
+        return head == null;
+    }
 }
