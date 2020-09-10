@@ -9,6 +9,6 @@ public class SimpleStack<T>  {
     }
 
     public T pop() {
-        return forwardLinked.deleteFirst();
+        return forwardLinked.deleteLast();
     }
 }
