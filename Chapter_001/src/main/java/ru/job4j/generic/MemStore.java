@@ -16,7 +16,7 @@ public class MemStore<T extends Base> implements Store<T> {
     @Override
     public boolean replace(String id, T model) {
         int index = Objects.checkIndex(indexById(id), mem.size());
-        T res = mem.set(indexById(id), model);
+        T res = mem.set(index, model);
         return res != null;
     }
 
