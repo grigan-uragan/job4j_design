@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Objects;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 public class ListUtils {
     public static <T> void addBefore(List<T> list, int index,  T value) {
@@ -33,10 +32,9 @@ public class ListUtils {
 
     public static <T> List<T> removeIf(List<T> list, Predicate<T> filter) {
         ListIterator<T> iterator = list.listIterator();
-       List<T> forDelete = list.stream().filter(filter).collect(Collectors.toList());
        while (iterator.hasNext()) {
            T temp = iterator.next();
-           if (forDelete.contains(temp)) {
+           if (filter.test(temp)) {
                iterator.remove();
            }
        }
@@ -45,10 +43,9 @@ public class ListUtils {
 
     public static <T> List<T> replaceIf(List<T> list, Predicate<T> filter, T value) {
         ListIterator<T> iterator = list.listIterator();
-        List<T> forReplace = list.stream().filter(filter).collect(Collectors.toList());
         while (iterator.hasNext()) {
             T temp = iterator.next();
-            if (forReplace.contains(temp)) {
+            if (filter.test(temp)) {
                 iterator.set(value);
             }
         }
