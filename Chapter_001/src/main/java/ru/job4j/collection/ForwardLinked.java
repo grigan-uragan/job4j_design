@@ -20,15 +20,11 @@ public class ForwardLinked<E> implements Iterable<E> {
     }
 
     public void revert() {
-        SimpleStack<E> stack = new SimpleStack<>();
-        Node<E> start = head;
-        while (start != null) {
-            stack.push(start.value);
-            start = start.next;
-        }
+        Node<E> current = head;
         head = null;
-        while (!stack.isEmpty()) {
-           add(stack.pop());
+        while (current != null) {
+            head = new Node<>(current.value, head);
+            current = current.next;
         }
     }
 
