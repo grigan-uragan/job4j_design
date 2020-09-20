@@ -1,15 +1,18 @@
 package ru.job4j.collection;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class SimpleHashMap<K, V> {
+public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Node<K, V>> {
+    private static final float LOAD_FACTOR = 0.75f;
     private Node<K, V>[] table;
     private int size = 0;
 
     public boolean insert(K key, V value) {
         //check table
         int start = size;
-        if (table == null || table.length == size) {
+        if (table == null || (table.length * LOAD_FACTOR) == size) {
             resize();
         }
         int hash = Objects.hashCode(key);
@@ -20,8 +23,8 @@ public class SimpleHashMap<K, V> {
 
     public V get(K key) {
         int index = indexOf(key);
-        if (table[index] != null) {
-           return table[index].value;
+        if (table[index] != null && table[index].getKey().equals(key)) {
+           return table[index].getValue();
         }
         return null;
     }
@@ -29,7 +32,7 @@ public class SimpleHashMap<K, V> {
     public boolean delete(K key) {
         int start = size;
         int index = indexOf(key);
-        if (table[index] != null) {
+        if (table[index] != null && table[index].getKey().equals(key)) {
             table[index] = null;
             size--;
         }
@@ -41,7 +44,7 @@ public class SimpleHashMap<K, V> {
     }
 
     private void add(Node<K, V> element) {
-        int index = indexOf(element.key);
+        int index = indexOf(element.getKey());
         if (table[index] == null) {
             table[index] = element;
             size++;
@@ -70,7 +73,34 @@ public class SimpleHashMap<K, V> {
         return newTab;
     }
 
-    private static class Node<K, V> {
+    @Override
+    public Iterator<Node<K, V>> iterator() {
+        return new Iterator<Node<K, V>>() {
+            private int point = 0;
+            @Override
+            public boolean hasNext() {
+                return point != size;
+            }
+
+            @Override
+            public Node<K, V> next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                Node<K, V> result = null;
+                for (int i = point; i < table.length; i++) {
+                    if (table[i] != null) {
+                        result = table[i];
+                        point++;
+                        break;
+                    }
+                }
+                return result;
+            }
+        };
+    }
+
+    static class Node<K, V> {
         private K key;
         private V value;
         private int hash;
@@ -79,6 +109,14 @@ public class SimpleHashMap<K, V> {
             this.key = key;
             this.value = value;
             this.hash = hash;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
         }
     }
 }

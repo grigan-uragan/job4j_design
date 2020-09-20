@@ -2,6 +2,8 @@ package ru.job4j.collection;
 
 import org.junit.Test;
 
+import java.util.Iterator;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
@@ -54,5 +56,26 @@ public class SimpleHashMapTest {
         map.delete("one");
         int result = map.getSize();
         assertThat(result, is(1));
+    }
+
+    @Test
+    public void whenAdd2ElementThenIteratorNextReturnOne() {
+        SimpleHashMap<String, Integer> map = new SimpleHashMap<>();
+        map.insert("one", 1);
+        map.insert("two", 2);
+        Iterator<SimpleHashMap.Node<String, Integer>> iterator = map.iterator();
+        int result = iterator.next().getValue();
+        assertThat(result, is(1));
+
+    }
+
+    @Test
+    public void whenAdd2ElementThenHasNextReturnTrue() {
+        SimpleHashMap<String, Integer> map = new SimpleHashMap<>();
+        map.insert("one", 1);
+        map.insert("two", 2);
+        Iterator<SimpleHashMap.Node<String, Integer>> iterator = map.iterator();
+        boolean result = iterator.hasNext();
+        assertThat(result, is(true));
     }
 }
