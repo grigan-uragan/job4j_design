@@ -29,4 +29,12 @@ public class TreeTest {
                 is(false)
         );
     }
+
+    @Test
+    public void whenAddTwiceThenFalse() {
+        Tree<Integer> tree = new Tree<>(1);
+        tree.add(1, 2);
+        boolean result = tree.add(1, 2);
+        assertThat(result, is(false));
+    }
 }
