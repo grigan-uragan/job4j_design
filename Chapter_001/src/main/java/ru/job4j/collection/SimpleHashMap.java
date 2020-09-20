@@ -1,5 +1,6 @@
 package ru.job4j.collection;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
@@ -48,7 +49,12 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Node<K, V>> {
         if (table[index] == null) {
             table[index] = element;
             size++;
+        } else {
+            if (table[index].getKey().equals(element.getKey())) {
+                table[index] = element;
+            }
         }
+
     }
 
     private int indexOf(K key) {
@@ -77,6 +83,7 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Node<K, V>> {
     public Iterator<Node<K, V>> iterator() {
         return new Iterator<Node<K, V>>() {
             private int point = 0;
+            private int modCount = size;
             @Override
             public boolean hasNext() {
                 return point != size;
@@ -86,6 +93,9 @@ public class SimpleHashMap<K, V> implements Iterable<SimpleHashMap.Node<K, V>> {
             public Node<K, V> next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
+                }
+                if (modCount != size) {
+                    throw new ConcurrentModificationException();
                 }
                 Node<K, V> result = null;
                 for (int i = point; i < table.length; i++) {
