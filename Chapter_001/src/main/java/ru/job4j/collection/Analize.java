@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Analize {
-
     public Info diff(List<People> previous, List<People> current) {
         Long added = 0L;
         Long deleted = previous.stream().filter(people -> !current.contains(people)).count();
@@ -18,9 +17,6 @@ public class Analize {
                change++;
            }
         }
-
         return new Info(added.intValue(), deleted.intValue(), change);
     }
-
-
 }
