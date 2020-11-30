@@ -1,9 +1,7 @@
 package io;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,11 +17,16 @@ public class LogFilter {
     }
 
     public static List<String> filter(String fileName) {
-        BufferedReadFile readFile = new BufferedReadFile();
-        List<String> temp = readFile.readLogFile(fileName);
-        return temp.stream()
-                .filter(s -> findString(s, "404"))
-                .collect(Collectors.toList());
+        List<String> result = new ArrayList<>();
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            result = reader.lines()
+                    .filter(s -> findString(s, "404"))
+                    .collect(Collectors.toList());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+
     }
 
     public static void save(List<String> log, String file) {
