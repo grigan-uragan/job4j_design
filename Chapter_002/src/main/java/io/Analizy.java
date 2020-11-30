@@ -1,42 +1,44 @@
 package io;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Analizy {
+
+    private String startRecord;
+    private boolean needRecord = false;
+
     public void unavailable(String source, String target) {
-        List<String> logList = new ArrayList<>();
-        boolean needRecord = false;
+        File file = new File(target);
+        file.delete();
         try (BufferedReader reader = new BufferedReader(new FileReader(source))) {
-          logList.addAll(reader.lines()
+          reader.lines()
                   .filter(s -> !s.isEmpty())
-                  .collect(Collectors.toList()));
+                  .map(s -> s.split("\\s"))
+                  .forEach(strings -> fallingStart(strings, file));
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String startRecord = "";
-        String stopRecord;
-        List<String> report = new ArrayList<>();
-        for (String str : logList) {
-           String[] strings = str.split("\\s");
-           if (strings[0].equals("500") || strings[0].equals("400")) {
-               if (!needRecord) {
-                   needRecord = true;
-                  startRecord = strings[1];
-               }
-           } else {
-               if (needRecord) {
-                   stopRecord = strings[1];
-                   needRecord = false;
-                   report.add(startRecord + ";" + stopRecord);
-               }
-           }
-        }
+    }
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter(target))) {
-            report.forEach(writer::println);
+    private void fallingStart(String[] strings, File fileName) {
+        if (strings[0].equals("500") || strings[0].equals("400")) {
+            if (!needRecord) {
+                needRecord = true;
+                startRecord = strings[1];
+            }
+        } else {
+            if (needRecord) {
+                String stopRecord = strings[1];
+                needRecord = false;
+                 writeFallingDownTime(startRecord
+                         + ";" + stopRecord, fileName);
+            }
+        }
+    }
+
+    private void writeFallingDownTime(String diapozone, File fileName) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName, true))) {
+            writer.println(diapozone);
         } catch (Exception e) {
             e.printStackTrace();
         }
