@@ -1,14 +1,10 @@
 package io;
 
-import org.w3c.dom.ls.LSOutput;
-
-import javax.naming.OperationNotSupportedException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
-import java.util.stream.Collectors;
 
 public class Config {
     private final String path;
@@ -20,19 +16,17 @@ public class Config {
 
     public void load() {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            Map<String, String> map = reader.lines()
+             reader.lines()
                     .filter(s -> (!s.contains("#") && !s.contains("!")))
                     .filter(s -> s.contains("="))
                     .map(s -> s.split("="))
-                    .collect(Collectors.toMap(strings -> strings[0],
-                            strings -> {
-                        String result = "";
+                    .forEach(strings -> {
+                        String str = "";
                         if (strings.length > 1) {
-                           result = strings[1];
+                            str = strings[1];
                         }
-                                return result;
-                            }));
-            values.putAll(map);
+                        values.put(strings[0], str);
+                    });
         } catch (Exception e) {
             e.printStackTrace();
         }
