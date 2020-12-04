@@ -19,14 +19,24 @@ public class AnalizyTest {
     public TemporaryFolder folder = new TemporaryFolder();
 
     @Test
-    public void whenServerDoNotFailedThenReportEmpty() {
+    public void whenServerDoNotFailedThenReportEmpty() throws IOException {
+        File source = folder.newFile("source.txt");
+        File target = folder.newFile("target.txt");
         Analizy analizy = new Analizy();
-        analizy.unavailable("/Users/Admin/IdeaProjects/job4j_design/ServerGoodWork.txt",
-                "/Users/Admin/IdeaProjects/job4j_design/unavailable.csv");
-        File file = new File(
-                "report.txt");
-        long result = file.length();
-        assertThat(result, is(0L));
+        List<String> result;
+        try (PrintWriter writer = new PrintWriter(new FileWriter(source))) {
+            writer.println("200 10:56:01");
+            writer.println("300 10:57:01");
+            writer.println("300 10:58:01");
+            writer.println("200 10:59:01");
+            writer.println("200 11:01:02");
+            writer.println("300 11:02:02");
+        }
+        analizy.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        try (BufferedReader reader = new BufferedReader(new FileReader(target))) {
+            result = reader.lines().collect(Collectors.toList());
+        }
+        assertThat(result.toString(), is("[]"));
     }
 
     @Test
@@ -36,12 +46,12 @@ public class AnalizyTest {
         Analizy analizy = new Analizy();
         List<String> result = new ArrayList<>();
         try (PrintWriter writer = new PrintWriter(new FileWriter(source))) {
-            writer.println("200 10:56:01\n"
-                    + "500 10:57:01\n"
-                    + "400 10:58:01\n"
-                    + "200 10:59:01\n"
-                    + "500 11:01:02\n"
-                    + "200 11:02:02");
+            writer.println("200 10:56:01");
+            writer.println("500 10:57:01");
+            writer.println("400 10:58:01");
+            writer.println("200 10:59:01");
+            writer.println("500 11:01:02");
+            writer.println("200 11:02:02");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -51,6 +61,27 @@ public class AnalizyTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-          assertThat(result.size(), is(2));
+          assertThat(result.toString(), is("[10:57:01;10:59:01, 11:01:02;11:02:02]"));
+    }
+
+    @Test
+    public void whenServerAllTimeFalling() throws IOException {
+        File source = folder.newFile("source.txt");
+        File target = folder.newFile("target.txt");
+        Analizy analizy = new Analizy();
+        List<String> result;
+        try (PrintWriter writer = new PrintWriter(new FileWriter(source))) {
+            writer.println("400 10:56:01");
+            writer.println("500 10:57:01");
+            writer.println("500 10:58:01");
+            writer.println("500 10:59:01");
+            writer.println("400 11:01:02");
+            writer.println("400 11:02:02");
+        }
+        analizy.unavailable(source.getAbsolutePath(), target.getAbsolutePath());
+        try (BufferedReader reader = new BufferedReader(new FileReader(target))) {
+            result = reader.lines().collect(Collectors.toList());
+        }
+        assertThat(result.toString(), is("[10:56:01; until now ]"));
     }
 }

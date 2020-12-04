@@ -29,7 +29,7 @@ public class Analizy {
     private List<String> serverWorkAnalysis(List<String> logList) {
         boolean needRecord = false;
         String startRecord = "";
-        String stopRecord;
+        String stopRecord = "";
         List<String> result = new ArrayList<>();
         for (String str : logList) {
             String[] strings = str.split("\\s");
@@ -45,6 +45,9 @@ public class Analizy {
                     result.add(startRecord + ";" + stopRecord);
                 }
             }
+        }
+        if (stopRecord.isEmpty() &&  needRecord) {
+            result.add(startRecord + "; until now ");
         }
         return result;
     }
