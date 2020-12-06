@@ -1,11 +1,15 @@
 package io;
 
 import java.io.File;
+import java.util.Objects;
 
 public class Dir {
     public static void main(String[] args) {
-        File file = new File(
-                "/Users/Admin/IdeaProjects/job4j_design/Chapter_002/src/main/java/io");
+        if (args.length == 0) {
+            throw new IllegalArgumentException(
+                    "Root folder is null. Usage java -jar dir.jar ROOT_FOLDER.");
+        }
+        File file = new File(args[0]);
         if (!file.exists()) {
             throw new IllegalArgumentException(String.format("Not exist %s",
                     file.getAbsoluteFile()));
@@ -15,7 +19,7 @@ public class Dir {
                     file.getAbsoluteFile()));
         }
         System.out.println("size : " + file.getTotalSpace());
-        for (File subFile : file.listFiles()) {
+        for (File subFile : Objects.requireNonNull(file.listFiles())) {
             System.out.println(subFile.getName()
                     + " - " + subFile.length() + " Byte");
         }

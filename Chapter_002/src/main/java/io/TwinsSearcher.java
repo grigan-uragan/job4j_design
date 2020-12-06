@@ -1,25 +1,23 @@
 package io;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TwinsSearcher implements FileVisitor<Path> {
     private List<String> files = new ArrayList<>();
 
     @Override
-    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs)
-            throws IOException {
+    public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
         return FileVisitResult.CONTINUE;
     }
 
     @Override
-    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs)
-            throws IOException {
+    public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
             String fileAndSpace = file.getFileName().toString()
                     + " - " + file.toFile().length();
             if (files.contains(fileAndSpace)) {
@@ -31,14 +29,12 @@ public class TwinsSearcher implements FileVisitor<Path> {
     }
 
     @Override
-    public FileVisitResult visitFileFailed(Path file, IOException exc)
-            throws IOException {
+    public FileVisitResult visitFileFailed(Path file, IOException exc) {
         return FileVisitResult.CONTINUE;
     }
 
     @Override
-    public FileVisitResult postVisitDirectory(Path dir, IOException exc)
-            throws IOException {
+    public FileVisitResult postVisitDirectory(Path dir, IOException exc) {
         return FileVisitResult.CONTINUE;
     }
 }
