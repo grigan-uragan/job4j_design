@@ -10,6 +10,9 @@ public class Search {
         Path start = Paths.get(".");
         SearchFile searcher =
                 new SearchFile(path -> path.toFile().getName().endsWith("txt"));
+        TwinsSearcher twinsSearcher = new TwinsSearcher();
         Files.walkFileTree(start, searcher);
+        Files.walkFileTree(start, twinsSearcher);
+
     }
 }
