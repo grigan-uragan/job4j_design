@@ -5,13 +5,10 @@ import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class TwinsSearcher implements FileVisitor<Path> {
-    private List<FileProperty> duplicates = new ArrayList<>();
     private Set<FileProperty> uniqueFile = new HashSet<>();
 
     @Override
