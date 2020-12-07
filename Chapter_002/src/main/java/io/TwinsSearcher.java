@@ -6,10 +6,13 @@ import java.nio.file.FileVisitor;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TwinsSearcher implements FileVisitor<Path> {
-    private List<String> files = new ArrayList<>();
+    private List<FileProperty> duplicates = new ArrayList<>();
+    private Set<FileProperty> uniqueFile = new HashSet<>();
 
     @Override
     public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
@@ -18,12 +21,12 @@ public class TwinsSearcher implements FileVisitor<Path> {
 
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
-            String fileAndSpace = file.getFileName().toString()
-                    + " - " + file.toFile().length();
-            if (files.contains(fileAndSpace)) {
-                System.out.println(fileAndSpace + " is duplicated");
+            FileProperty fileProperty =
+                    new FileProperty(file.getFileName().toString(), file.toFile().length());
+            if (uniqueFile.contains(fileProperty)) {
+                System.out.println(fileProperty + " is duplicated");
             } else {
-                files.add(fileAndSpace);
+                uniqueFile.add(fileProperty);
             }
         return FileVisitResult.CONTINUE;
     }
