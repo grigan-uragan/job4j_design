@@ -9,25 +9,24 @@ public class ArgsName {
 
     public String get(String key) {
         if (!values.containsKey(key)) {
-            throw new IllegalArgumentException("Unsupported params");
+            throw new IllegalArgumentException("Params not found");
         }
         return values.get(key);
     }
 
     private void parse(String[] args) {
         if (args.length != 0) {
-            Stream.of(args)
-                    .filter(s -> s.contains("-") && s.contains("="))
-                    .map(s -> s.split("="))
-                    .forEach(strings -> {
-                        String key;
-                        String value = "";
-                        if (strings.length > 1) {
-                            value = strings[1];
-                        }
-                        key = strings[0].substring(1);
-                        values.put(key, value);
-                    });
+            for (String str : args) {
+                if (str.contains("-") && str.contains("=")) {
+                    String[] params = str.split("=");
+                    if (params.length != 2) {
+                        throw new IllegalArgumentException("Invalid params '=' ");
+                    }
+                    values.put(params[0].substring(1), params[1]);
+                } else {
+                    throw new IllegalArgumentException("Invalid params");
+                }
+            }
         }
     }
 
