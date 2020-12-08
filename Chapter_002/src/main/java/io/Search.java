@@ -17,5 +17,6 @@ public class Search {
         TwinsSearcher twinsSearcher = new TwinsSearcher();
         Files.walkFileTree(start, searcher);
         Files.walkFileTree(start, twinsSearcher);
+        twinsSearcher.printDuplicate();
     }
 }
