@@ -7,10 +7,14 @@ public class ArgsName {
     private final Map<String, String> values = new HashMap<>();
 
     public String get(String key) {
-        if (!values.containsKey(key)) {
+        if (!containsParam(key)) {
             throw new IllegalArgumentException("Params not found");
         }
         return values.get(key);
+    }
+
+    public boolean containsParam(String key) {
+        return values.containsKey(key);
     }
 
     private void parse(String[] args) {
@@ -22,8 +26,6 @@ public class ArgsName {
                         throw new IllegalArgumentException("Invalid params '=' ");
                     }
                     values.put(params[0].substring(1), params[1]);
-                } else {
-                    throw new IllegalArgumentException("Invalid params");
                 }
             }
         }

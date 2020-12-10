@@ -1,5 +1,6 @@
 package io;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
@@ -11,10 +12,15 @@ import java.util.function.Predicate;
 
 public class SearchFile implements FileVisitor<Path> {
     private Predicate<Path> predicate;
-    private List<Path> temp = new ArrayList<>();
+    private List<Path> pathListList = new ArrayList<>();
+    private List<File> filesList = new ArrayList<>();
 
     public SearchFile(Predicate<Path> predicate) {
         this.predicate = predicate;
+    }
+
+    private void fileToPath() {
+        filesList.forEach(file -> pathListList.add(file.toPath()));
     }
 
     @Override
@@ -25,8 +31,7 @@ public class SearchFile implements FileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) {
         if (predicate.test(file)) {
-            System.out.println(file.toAbsolutePath());
-            temp.add(file);
+            filesList.add(file.toFile());
         }
         return FileVisitResult.CONTINUE;
     }
@@ -41,7 +46,16 @@ public class SearchFile implements FileVisitor<Path> {
         return FileVisitResult.CONTINUE;
     }
 
-    public List<Path> getTemp() {
-        return temp;
+    public List<File> getFiles() {
+        return filesList;
+    }
+
+    public List<Path> getPathListList() {
+        fileToPath();
+        return pathListList;
+    }
+
+    public Predicate<Path> getPredicate() {
+        return predicate;
     }
 }
