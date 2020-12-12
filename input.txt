@@ -1,3 +1,8 @@
-login=login
-password=password
-url=url
+user: hello
+bot: А ты как думаешь?
+user: плохо
+bot: Привет 
+user: закончить
+user: привет
+bot: Нормально
+user: закончить
