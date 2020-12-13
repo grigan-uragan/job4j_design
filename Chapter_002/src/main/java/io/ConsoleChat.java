@@ -26,7 +26,7 @@ public class ConsoleChat {
         String output;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
              BufferedWriter writer = new BufferedWriter(
-                     new FileWriter(path, StandardCharsets.UTF_8))) {
+                      new FileWriter(path, StandardCharsets.UTF_8))) {
             while (!input.equals(ConsoleChat.OUT)) {
                 System.out.print("user: ");
                 input = reader.readLine();
