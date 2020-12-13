@@ -9,8 +9,17 @@ import java.net.Socket;
 
 public class EchoServer {
     private static boolean isWorked = true;
-
+    private static String parse(String data) {
+        String result = "";
+        for (String str : data.split("\\s")) {
+            if (str.contains("/?msg=")) {
+                result = str.substring(str.indexOf("/?msg=") + 6);
+            }
+        }
+        return result;
+    }
     public static void main(String[] args) throws IOException {
+        String result = "";
         try (ServerSocket serverSocket = new ServerSocket(9000)) {
             while (isWorked) {
                 Socket socket = serverSocket.accept();
@@ -20,7 +29,10 @@ public class EchoServer {
                     String str;
                     while (!(str = input.readLine()).isEmpty()) {
                         System.out.println(str);
-                        if (str.contains("bye")) {
+                         if (!parse(str).isEmpty()) {
+                             result = parse(str);
+                         }
+                        if (result.equals("exit")) {
                             socket.close();
                             isWorked = false;
                             break;
@@ -30,7 +42,7 @@ public class EchoServer {
                             output.write(("HTTP/1.1 200 OK\r\n"
                                     + "Content-type: text/html\n"
                                     + "\n"
-                                    + "<h2>Hello</h2>").getBytes());
+                                    + "<h2> " + result + "</h2>").getBytes());
                         }
                 }
             }
