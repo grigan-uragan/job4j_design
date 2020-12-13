@@ -20,13 +20,13 @@ public class EchoServer {
                     String str;
                     while (!(str = input.readLine()).isEmpty()) {
                         System.out.println(str);
-                        if (str.equals("/exit")) {
+                        if (str.contains("bye")) {
+                            socket.close();
                             isWorked = false;
-                            output.write("HTTP/1.1 400 ERROR\r\n\\".getBytes());
+                            break;
                         } else {
                             output.write("HTTP/1.1 200 OK\r\n\\".getBytes());
                         }
-
                     }
                 }
             }
