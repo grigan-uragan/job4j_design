@@ -1,9 +1,9 @@
 package io;
 
 import java.io.*;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.util.Random;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConsoleChat {
 
@@ -13,30 +13,37 @@ public class ConsoleChat {
     private String path;
     private String botAnswer;
     private boolean needAnswer = true;
+    private List<String> answers = new ArrayList<>();
+    private List<String> log = new ArrayList<>();
 
-    public ConsoleChat(String path, String botAnswer) {
+    public ConsoleChat(String path, String botAnswerPath) {
         this.path = path;
-        this.botAnswer = botAnswer;
+        this.botAnswer = botAnswerPath;
     }
 
     public void run() {
         String input = "";
         String output;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-            BufferedWriter writer = new BufferedWriter(
-                    new FileWriter(path, StandardCharsets.UTF_8, true))) {
+             BufferedWriter writer = new BufferedWriter(
+                     new FileWriter(path, StandardCharsets.UTF_8))) {
             while (!input.equals(ConsoleChat.OUT)) {
                 System.out.print("user: ");
                 input = reader.readLine();
-                writer.write("user: " + input + System.lineSeparator());
-                writer.flush();
+                log.add("user: " + input + System.lineSeparator());
                 output = answer(input);
                 if (!output.isEmpty()) {
-                    writer.write(output + System.lineSeparator());
-                    writer.flush();
+                    log.add(output + System.lineSeparator());
                     System.out.println(output);
                 }
             }
+                log.forEach(s -> {
+                    try {
+                        writer.write(s);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -44,7 +51,15 @@ public class ConsoleChat {
 
     public String answer(String message) {
         String result = "";
-        String[] answers = botAnswer.split(System.lineSeparator());
+        if (answers.isEmpty()) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(botAnswer))) {
+                while (reader.ready()) {
+                    answers.add(reader.readLine());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         if (message.equals(ConsoleChat.STOP) || message.equals(ConsoleChat.OUT)) {
             needAnswer = false;
             return "";
@@ -54,22 +69,16 @@ public class ConsoleChat {
             return "Продолжаем разговор";
         }
         if (needAnswer) {
-            int index = (int) (Math.random() * answers.length);
-            result = answers[index];
+            int index = (int) (Math.random() * answers.size());
+            result = answers.get(index);
         }
         return "bot: " + result;
     }
 
     public static void main(String[] args) {
-        String answer = "Привет \n"
-                + "Как дела?\n"
-                + "А ты как думаешь?\n"
-                + "Ой всё...\n"
-                + "Как интересно\n"
-                + "Нормально";
         ConsoleChat consoleChat = new ConsoleChat(
-                "/Users/Admin/IdeaProjects/job4j_design/input.txt", answer);
+                "/Users/Admin/IdeaProjects/job4j_design/input.txt",
+                "/Users/Admin/IdeaProjects/job4j_design/answers.txt");
         consoleChat.run();
     }
-
 }

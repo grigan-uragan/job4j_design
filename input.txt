@@ -1,8 +1,5 @@
-user: hello
-bot: А ты как думаешь?
-user: плохо
-bot: Привет 
-user: закончить
-user: привет
-bot: Нормально
+user: Hello
+bot: Ой всё...
+user: oh com on
+bot: Как интересно
 user: закончить
