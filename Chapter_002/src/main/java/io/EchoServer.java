@@ -24,10 +24,14 @@ public class EchoServer {
                             socket.close();
                             isWorked = false;
                             break;
-                        } else {
-                            output.write("HTTP/1.1 200 OK\r\n\\".getBytes());
                         }
                     }
+                        if (isWorked) {
+                            output.write(("HTTP/1.1 200 OK\r\n"
+                                    + "Content-type: text/html\n"
+                                    + "\n"
+                                    + "<h2>Hello</h2>").getBytes());
+                        }
                 }
             }
 
