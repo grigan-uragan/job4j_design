@@ -9,6 +9,7 @@ import java.net.Socket;
 
 public class EchoServer {
     private static boolean isWorked = true;
+
     private static String parse(String data) {
         String result = "";
         for (String str : data.split("\\s")) {
@@ -18,9 +19,11 @@ public class EchoServer {
         }
         return result;
     }
+
     public static void main(String[] args) throws IOException {
         String result = "";
         try (ServerSocket serverSocket = new ServerSocket(9000)) {
+            System.out.println("server started");
             while (isWorked) {
                 Socket socket = serverSocket.accept();
                 try (OutputStream output = socket.getOutputStream();

@@ -24,9 +24,7 @@ public class ConsoleChat {
     public void run() {
         String input = "";
         String output;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-             BufferedWriter writer = new BufferedWriter(
-                      new FileWriter(path, StandardCharsets.UTF_8))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             while (!input.equals(ConsoleChat.OUT)) {
                 System.out.print("user: ");
                 input = reader.readLine();
@@ -37,6 +35,8 @@ public class ConsoleChat {
                     System.out.println(output);
                 }
             }
+            try (BufferedWriter writer = new BufferedWriter(
+                    new FileWriter(path, StandardCharsets.UTF_8))) {
                 log.forEach(s -> {
                     try {
                         writer.write(s);
@@ -44,6 +44,7 @@ public class ConsoleChat {
                         e.printStackTrace();
                     }
                 });
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }

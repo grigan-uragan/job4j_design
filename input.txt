@@ -1,5 +1,17 @@
-user: Hello
+user: hello
+bot: Привет
+user: how are you
+bot: Привет
+user: fuck
+bot: Привет
+user: h
 bot: Ой всё...
-user: oh com on
+user: h
 bot: Как интересно
+user: cnjg
+bot: Как интересно
+user: стоп
+user: стоп
+user: продолжить
+Продолжаем разговор
 user: закончить
