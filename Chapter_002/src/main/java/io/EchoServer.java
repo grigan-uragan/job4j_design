@@ -1,5 +1,8 @@
 package io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -9,6 +12,7 @@ import java.net.Socket;
 
 public class EchoServer {
     private static boolean isWorked = true;
+    public static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
 
     private static String parse(String data) {
         String result = "";
@@ -20,7 +24,7 @@ public class EchoServer {
         return result;
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
         String result = "";
         try (ServerSocket serverSocket = new ServerSocket(9000)) {
             System.out.println("server started");
@@ -50,6 +54,8 @@ public class EchoServer {
                 }
             }
 
+        } catch (IOException e) {
+            LOG.error("We have some IO troubles", e);
         }
     }
 }

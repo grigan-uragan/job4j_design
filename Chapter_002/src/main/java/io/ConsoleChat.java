@@ -1,5 +1,8 @@
 package io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -15,6 +18,7 @@ public class ConsoleChat {
     private boolean needAnswer = true;
     private List<String> answers = new ArrayList<>();
     private List<String> log = new ArrayList<>();
+    public static final Logger LOG = LoggerFactory.getLogger(ConsoleChat.class.getName());
 
     public ConsoleChat(String path, String botAnswerPath) {
         this.path = path;
@@ -41,7 +45,7 @@ public class ConsoleChat {
                     try {
                         writer.write(s);
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        LOG.error("Some problems with BufferedWriter", e);
                     }
                 });
             }
@@ -58,7 +62,7 @@ public class ConsoleChat {
                     answers.add(reader.readLine());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                LOG.error("Some problems with BufferedReader", e);
             }
         }
         if (message.equals(ConsoleChat.STOP) || message.equals(ConsoleChat.OUT)) {
