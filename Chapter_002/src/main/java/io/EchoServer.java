@@ -11,8 +11,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer {
+    private static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
     private static boolean isWorked = true;
-    public static final Logger LOG = LoggerFactory.getLogger(EchoServer.class.getName());
 
     private static String parse(String data) {
         String result = "";

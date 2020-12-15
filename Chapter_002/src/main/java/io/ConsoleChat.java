@@ -10,6 +10,7 @@ import java.util.List;
 
 public class ConsoleChat {
 
+    private static final Logger LOG = LoggerFactory.getLogger(ConsoleChat.class.getName());
     private static final String STOP = "стоп";
     private static final String OUT = "закончить";
     private static final String CONTINUE = "продолжить";
@@ -18,7 +19,6 @@ public class ConsoleChat {
     private boolean needAnswer = true;
     private List<String> answers = new ArrayList<>();
     private List<String> log = new ArrayList<>();
-    public static final Logger LOG = LoggerFactory.getLogger(ConsoleChat.class.getName());
 
     public ConsoleChat(String path, String botAnswerPath) {
         this.path = path;
