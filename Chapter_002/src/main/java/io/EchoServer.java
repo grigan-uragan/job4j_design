@@ -34,7 +34,11 @@ public class EchoServer {
                      BufferedReader input = new BufferedReader(
                              new InputStreamReader(socket.getInputStream()))) {
                     String str;
-                    while (!(str = input.readLine()).isEmpty()) {
+                    while (true) {
+                        str = input.readLine();
+                        if (str.isEmpty()) {
+                            break;
+                        }
                         System.out.println(str);
                          if (!parse(str).isEmpty()) {
                              result = parse(str);

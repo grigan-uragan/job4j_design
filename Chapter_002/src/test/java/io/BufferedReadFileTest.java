@@ -12,7 +12,7 @@ public class BufferedReadFileTest {
     public void whenFileHave3LinesThenListGive3Size() {
         BufferedReadFile readFile = new BufferedReadFile();
         List<String> result = readFile
-                .readLogFile("/Users/Admin/IdeaProjects/job4j_design/input.txt");
-        assertThat(result.size(), is(3));
+                .readLogFile("/Users/Admin/IdeaProjects/job4j_design/ServerFailedLog.txt");
+        assertThat(result.size(), is(6));
     }
 }
