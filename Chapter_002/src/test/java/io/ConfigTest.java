@@ -10,8 +10,7 @@ public class ConfigTest {
     @Test
     public void whenConfigWithoutCommentsThenAllPropertyPutToMap() {
         String path =
-                "/Users/Admin/IdeaProjects/job4j_design/"
-                        + "propertiesForTest/withoutComments.properties";
+                "../propertiesForTest/withoutComments.properties";
         Config config = new Config(path);
         config.load();
         String result = config.value("name");
@@ -21,7 +20,7 @@ public class ConfigTest {
     @Test
     public void whenConfigWithCommentsThenCommentsDoNotInsertToMapKey() {
         String path =
-                "/Users/Admin/IdeaProjects/job4j_design/propertiesForTest/withComments.properties";
+                "../propertiesForTest/withComments.properties";
         Config config = new Config(path);
         config.load();
         assertThat(config.getValues().size(), is(3));
@@ -30,8 +29,7 @@ public class ConfigTest {
     @Test(expected = UnsupportedOperationException.class)
     public void whenParamIsEmptyThemThrowUnsupportedException() {
         String path =
-                "/Users/Admin/IdeaProjects/job4j_design/"
-                       + "propertiesForTest/withComments.properties";
+                "../propertiesForTest/withComments.properties";
         Config config = new Config(path);
         config.load();
         config.value("surname");
