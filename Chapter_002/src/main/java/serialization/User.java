@@ -17,6 +17,26 @@ public class User {
         this.sex = sex;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public Contact getContact() {
+        return contact;
+    }
+
+    public String[] getRole() {
+        return role;
+    }
+
+    public boolean isSex() {
+        return sex;
+    }
+
     @Override
     public String toString() {
         return "User{"
