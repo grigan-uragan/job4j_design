@@ -4,9 +4,22 @@ public class ArgZip {
     private final ArgsName argsName;
 
     //    java -jar pack.jar -d=c:\project\job4j\ -e=class -o=project.zip
-
+    //    java -jar find.jar -d c:/ -n *.txt -m -o log.txt
     public ArgZip(String[] args) {
-        argsName = ArgsName.of(args);
+        if (delimiterCheck(args)) {
+            argsName = ArgsName.of(args, "=");
+        } else {
+            argsName = ArgsName.of(args);
+        }
+    }
+
+    private boolean delimiterCheck(String[] args) {
+        for (String str : args) {
+            if (str.contains("=")) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isValid() {

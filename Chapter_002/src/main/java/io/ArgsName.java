@@ -17,13 +17,14 @@ public class ArgsName {
         return values.containsKey(key);
     }
 
-    private void parse(String[] args) {
+    private void parse(String[] args, String delimiter) {
         if (args.length != 0) {
             for (String str : args) {
-                if (str.contains("-") && str.contains("=")) {
+                if (str.contains("-") && str.contains(delimiter)) {
                     String[] params = str.split("=");
                     if (params.length != 2) {
-                        throw new IllegalArgumentException("Invalid params '=' ");
+                        throw new IllegalArgumentException(
+                                String.format("Invalid params %s ", delimiter));
                     }
                     values.put(params[0].substring(1), params[1]);
                 }
@@ -31,17 +32,44 @@ public class ArgsName {
         }
     }
 
+    private void parseWithoutDelimiter(String[] args) {
+        if (args.length != 0) {
+            for (int i = 0; i < args.length; i++) {
+                if (args[i].startsWith("-")) {
+                    if (args.length > (i + 1)) {
+                        if (args[i + 1].startsWith("-")) {
+                            values.put(args[i].substring(1), "");
+                        } else {
+                            values.put(args[i].substring(1), args[i + 1]);
+                        }
+                    } else {
+                        values.put(args[i].substring(1), "");
+                    }
+                }
+            }
+        }
+    }
+
     public static ArgsName of(String[] args) {
         ArgsName argsName = new ArgsName();
-        argsName.parse(args);
+        argsName.parseWithoutDelimiter(args);
+        return argsName;
+    }
+
+    public static ArgsName of(String[] args, String delimiter) {
+        ArgsName argsName = new ArgsName();
+        argsName.parse(args, delimiter);
         return argsName;
     }
 
     public static void main(String[] args) {
-        ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512", "-encoding=UTF-8"});
+        ArgsName jvm = ArgsName.of(new String[] {"-Xmx=512", "-encoding=UTF-8"}, "=");
         System.out.println(jvm.get("Xmx"));
 
-        ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"});
+        ArgsName zip = ArgsName.of(new String[] {"-out=project.zip", "-encoding=UTF-8"}, "=");
         System.out.println(zip.get("out"));
+
+        ArgsName arg  = ArgsName.of(args);
+        System.out.println(arg.get("o"));
     }
 }
