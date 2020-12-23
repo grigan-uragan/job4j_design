@@ -6,27 +6,22 @@ import java.util.stream.Collectors;
 public class Analize {
 
     public Info diff(List<User> previous, List<User> current) {
-        int del = 0;
+        Map<Integer, User> users = new HashMap<>();
+        previous.forEach(user -> users.put(user.id, user));
+        int del;
         int change = 0;
-        int add;
-        List<User> tempPrev = new ArrayList<>(previous);
-        List<User> tempCur = new ArrayList<>(current);
-        tempPrev.removeAll(current);
-        tempCur.removeAll(previous);
-        for (User prev : tempPrev) {
-            boolean wasChanged = false;
-            for (User cur : tempCur) {
-                if (prev.id == cur.id) {
+        int add = 0;
+        for (User cur : current) {
+            if (users.containsKey(cur.id)) {
+                if (!cur.equals(users.get(cur.id))) {
                     change++;
-                    wasChanged = true;
-                    break;
                 }
-            }
-            if (wasChanged) {
-                del++;
+            } else {
+                add++;
             }
         }
-        add = tempCur.size() - change;
+        previous.removeAll(current);
+        del = previous.size() - change;
         return new Info(add, change, del);
     }
 
