@@ -1,0 +1,27 @@
+create database users_db;
+
+\c users_db;
+
+create table users(
+id serial primary key,
+name varchar(255),
+phone varchar(255),
+email varchar(255)
+);
+
+insert into users (name, phone, email) values ('Bob','+7(926)555-55-55','bob@mail.ru');
+
+insert into users(name, phone, email) values ('Tom','+7(903)333-33-33', 'tom@gmail.com');
+
+insert into users(name,phone,email) values ('Max', '+7(916)123-45-67', 'max@mail.ru');
+
+select * from users;
+
+update users set name='Robert' where id=1;
+
+insert into users (name, phone, email) values ('Bob','+7(926)555-55-55','bob@mail.ru');
+
+select * from users;
+
+delete from users;
+
