@@ -38,9 +38,10 @@ left join meeting_status ms using(meeting_status_id)
 where meeting_status_name = 'confirmed'
 group by meeting;
 
-select m.meeting_name as meeting
-from orders o
+select meeting_name from orders o
 left join meeting m using(meeting_id)
-left join meeting_status ms using(meeting_status_id)
-where meeting_status_name = 'rejected' or null
-group by meeting;
+group by meeting_name
+except
+select meeting_name from orders o
+left join meeting m using(meeting_id)
+where meeting_status_id = 1;
