@@ -42,5 +42,5 @@ select m.meeting_name as meeting
 from orders o
 left join meeting m using(meeting_id)
 left join meeting_status ms using(meeting_status_id)
-where meeting_status_name = 'rejected'
+where meeting_status_name = 'rejected' or null
 group by meeting;
