@@ -1,4 +1,4 @@
-package garbageCollector;
+package gc;
 
 public class Person {
     private int age;
@@ -14,6 +14,6 @@ public class Person {
 
     @Override
     protected void finalize() throws Throwable {
-        System.out.println("I was removed " + name + " age " + age);
+        System.out.println(age);
     }
 }

@@ -1,4 +1,4 @@
-package garbageCollector;
+package gc;
 
 public class GCDemo {
     private static final long KB = 1000;
