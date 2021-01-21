@@ -34,8 +34,7 @@ public class GCDemonstration {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        createPersonWithInstance(1000);
-        Thread.sleep(2000);
-        createEmptyPerson(1000);
+        createPersonWithInstance(20000);
+        createEmptyPerson(20000);
     }
 }
