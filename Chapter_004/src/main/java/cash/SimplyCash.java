@@ -3,6 +3,7 @@ package cash;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.ref.SoftReference;
 import java.lang.ref.WeakReference;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 public class SimplyCash {
     private String path;
-    private WeakReference<Map<String, String>> cash;
+    private SoftReference<Map<String, String>> cash;
     private int count = 0;
 
     public SimplyCash(String path) {
@@ -25,10 +26,11 @@ public class SimplyCash {
 
     public String getFileInstance(String key) throws IOException {
         if (cash == null || cash.get() == null) {
-            cash = new WeakReference<>(read());
+            cash = new SoftReference<>(read());
             count++;
             System.out.println("Cash was reloaded in " + count + " times");
         }
+
         if (cash.get().containsKey(key)) {
             return cash.get().get(key);
         } else {
