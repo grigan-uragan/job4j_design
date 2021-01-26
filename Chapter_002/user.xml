@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<user name="Bob" age="10" sex="true">
+    <contact zipCode="+7495" code="555 55 55"/>
+    <roles>
+        <role>Admin</role>
+        <role>User</role>
+    </roles>
+</user>
