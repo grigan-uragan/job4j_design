@@ -1,13 +1,23 @@
 package serialization;
 
+import javax.xml.bind.annotation.*;
 import java.util.Arrays;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class User {
+    @XmlAttribute
     private String name;
+    @XmlAttribute
     private int age;
     private Contact contact;
+    @XmlElementWrapper(name = "roles")
     private String[] role;
+    @XmlAttribute
     private boolean sex;
+
+    public User() {
+    }
 
     public User(String name, int age, Contact contact, String[] role, boolean sex) {
         this.name = name;
