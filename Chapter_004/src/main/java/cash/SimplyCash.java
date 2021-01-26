@@ -11,31 +11,32 @@ import java.util.Map;
 
 public class SimplyCash {
     private String path;
-    private SoftReference<Map<String, String>> cash;
-    private int count = 0;
+    private Map<String, SoftReference<String>> cash;
+    private TXTFileReader reader = new TXTFileReader();
 
     public SimplyCash(String path) {
         this.path = path;
     }
 
-    private Map<String, String> read() throws IOException {
-        TXTFileReader reader = new TXTFileReader();
+    private Map<String, SoftReference<String>> read() throws IOException {
         Files.walkFileTree(Paths.get(path), reader);
         return reader.getStore();
     }
 
     public String getFileInstance(String key) throws IOException {
-        if (cash == null || cash.get() == null) {
-            cash = new SoftReference<>(read());
-            count++;
-            System.out.println("Cash was reloaded in " + count + " times");
+        if (cash == null) {
+            cash = read();
         }
-
-        if (cash.get().containsKey(key)) {
-            return cash.get().get(key);
-        } else {
-            throw new IllegalArgumentException("Invalid key");
+        if (!cash.containsKey(key)) {
+            throw new IllegalArgumentException("invalid key");
         }
+        String result = cash.get(key).get();
+        if (result == null) {
+            reader.loadSingleFile(key);
+            cash = reader.getStore();
+            result = cash.get(key).get();
+        }
+        return result;
     }
 
     public void getResponse() {

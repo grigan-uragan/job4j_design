@@ -1,9 +1,7 @@
 package cash;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.lang.ref.SoftReference;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Path;
@@ -12,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class TXTFileReader implements FileVisitor<Path> {
-    private Map<String, String> store = new HashMap<>();
+    private Map<String, SoftReference<String>> store = new HashMap<>();
 
     @Override
     public FileVisitResult preVisitDirectory(
@@ -23,12 +21,21 @@ public class TXTFileReader implements FileVisitor<Path> {
     @Override
     public FileVisitResult visitFile(
             Path file, BasicFileAttributes attrs) throws IOException {
-        try (BufferedReader reader = new BufferedReader(new FileReader(file.toFile()))) {
-            StringBuilder result = new StringBuilder();
-            while (reader.ready()) {
-                result.append(reader.readLine());
+        if (file.getFileName().toString().endsWith("txt")) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(file.toFile()))) {
+                StringBuilder result = new StringBuilder();
+                while (reader.ready()) {
+                    result.append(reader.readLine());
+                }
+                String key = file.getFileName().toString();
+
+                if (!store.containsKey(key)) {
+                    store.put(key, new SoftReference<String>(result.toString()));
+                } else if (store.get(key).get() == null) {
+                    System.out.println("file was reload");
+                    store.put(key, new SoftReference<String>(result.toString()));
+                }
             }
-            store.putIfAbsent(file.getFileName().toString(), result.toString());
         }
         return FileVisitResult.CONTINUE;
     }
@@ -45,12 +52,21 @@ public class TXTFileReader implements FileVisitor<Path> {
         return FileVisitResult.CONTINUE;
     }
 
-    public Map<String, String> getStore() {
+    public Map<String, SoftReference<String>> getStore() {
         return store;
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        System.out.println("cash cleared");
+    public void loadSingleFile(String file) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            StringBuilder result = new StringBuilder();
+            while (reader.ready()) {
+                result.append(reader.readLine());
+            }
+            store.put(file, new SoftReference<>(result.toString()));
+            System.out.println(file + " was loaded");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
