@@ -9,8 +9,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 
 public class GeneratorTest {
-    String string = "I am a ${name}, Who are ${subject}?";
-    Map<String, String> args = new HashMap<>();
+    private String string = "I am a ${name}, Who are ${subject}?";
+    private Map<String, String> args = new HashMap<>();
 
     @Test
     public void shouldReturnStringCorrect() {
