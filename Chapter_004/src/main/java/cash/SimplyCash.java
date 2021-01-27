@@ -1,41 +1,40 @@
 package cash;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.ref.SoftReference;
-import java.lang.ref.WeakReference;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.Map;
 
 public class SimplyCash {
     private String path;
-    private Map<String, SoftReference<String>> cash;
-    private TXTFileReader reader = new TXTFileReader();
+    private Map<String, SoftReference<String>> cash = new HashMap<>();
 
     public SimplyCash(String path) {
         this.path = path;
     }
 
-    private Map<String, SoftReference<String>> read() throws IOException {
-        Files.walkFileTree(Paths.get(path), reader);
-        return reader.getStore();
+    private void read(String file) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            StringBuilder result = new StringBuilder();
+            while (reader.ready()) {
+                result.append(reader.readLine());
+            }
+            cash.put(file, new SoftReference<>(result.toString()));
+            System.out.println(file + " was loaded");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public String getFileInstance(String key) throws IOException {
-        if (cash == null) {
-            cash = read();
+        String result = "";
+        if (cash == null || cash.get(key) == null || cash.get(key).get() == null) {
+            read(key);
         }
-        if (!cash.containsKey(key)) {
-            throw new IllegalArgumentException("invalid key");
-        }
-        String result = cash.get(key).get();
-        if (result == null) {
-            reader.loadSingleFile(key);
-            cash = reader.getStore();
-            result = cash.get(key).get();
-        }
+        result = cash.get(key).get();
         return result;
     }
 
