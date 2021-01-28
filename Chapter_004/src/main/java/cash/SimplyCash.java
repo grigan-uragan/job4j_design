@@ -16,7 +16,8 @@ public class SimplyCash {
         this.path = path;
     }
 
-    private void read(String file) throws IOException {
+    private String read(String file) throws IOException {
+        String string = "";
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             StringBuilder result = new StringBuilder();
             while (reader.ready()) {
@@ -24,17 +25,23 @@ public class SimplyCash {
             }
             cash.put(file, new SoftReference<>(result.toString()));
             System.out.println(file + " was loaded");
+            string = cash.get(file).get();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return string;
     }
 
     public String getFileInstance(String key) throws IOException {
-        String result = "";
-        if (cash == null || cash.get(key) == null || cash.get(key).get() == null) {
-            read(key);
+        String result;
+        if (cash != null && cash.get(key) != null) {
+            result = cash.get(key).get();
+            if (result == null) {
+                result = read(key);
+            }
+        } else {
+            result = read(key);
         }
-        result = cash.get(key).get();
         return result;
     }
 
