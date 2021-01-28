@@ -1,19 +1,22 @@
 package tdd;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Cinema2D implements Cinema {
 
     private List<Session> sessions = new ArrayList<>();
+    private Set<Ticket> tickets = new HashSet<>();
 
     @Override
     public Ticket buy(Account account, int row, int column, Calendar date) {
-        return new ETicket(date, row, column);
+        Ticket ticket = new ETicket(date, row, column);
+        boolean isValid = tickets.add(ticket);
+        if (!isValid) {
+            throw new IllegalStateException("Ticket was sold, try change row or column");
+        }
+        return ticket;
     }
 
     @Override

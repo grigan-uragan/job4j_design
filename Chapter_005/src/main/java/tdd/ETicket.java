@@ -9,6 +9,9 @@ public class ETicket implements Ticket {
     private int column;
 
     public ETicket(Calendar date, int row, int column) {
+        if (row < 1 || column < 1) {
+            throw new IllegalArgumentException("row and column should be more than 0");
+        }
         this.date = date;
         this.row = row;
         this.column = column;
