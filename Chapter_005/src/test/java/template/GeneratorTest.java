@@ -10,10 +10,10 @@ import static org.junit.Assert.*;
 
 public class GeneratorTest {
     private String string = "I am a ${name}, Who are ${subject}?";
-    private Map<String, String> args = new HashMap<>();
 
     @Test
     public void shouldReturnStringCorrect() {
+        Map<String, String> args = new HashMap<>();
         args.put("name", "Bob");
         args.put("subject", "you");
         Generator generator = new Generator() {
@@ -29,9 +29,14 @@ public class GeneratorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfArgsWasMore() {
+        Map<String, String> args = new HashMap<>();
+        args.put("name", "Bob");
+        args.put("subject", "you");
+        args.put("hello", "world");
         Generator generator = new Generator() {
             @Override
             public String produce(String template, Map<String, String> args) {
+
                 throw new IllegalArgumentException("There were more arguments");
             }
         };
@@ -42,6 +47,7 @@ public class GeneratorTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void shouldThrowExceptionIfArgsFew() {
+        Map<String, String> args = new HashMap<>();
         Generator generator = new Generator() {
             @Override
             public String produce(String template, Map<String, String> args) {
