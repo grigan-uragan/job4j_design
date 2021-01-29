@@ -4,12 +4,12 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class ProgrammersReport implements Report {
+public class HTMLReport implements Report {
     private Store store;
     private SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
     private final String pattern = "<tr><td>%s</td> <td>%s</td> <td>%s</td> <td>%s</td>";
 
-    public ProgrammersReport(Store store) {
+    public HTMLReport(Store store) {
         this.store = store;
     }
 

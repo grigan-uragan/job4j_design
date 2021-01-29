@@ -37,7 +37,7 @@ public class ReportTest {
     public void shouldReturnReportForProgrammers() {
         String expected = String.format(htmlPattern,
                 "name", "hired", "fired", "salary", "Bob", "2021-01-21", "2021-07-21", 100d);
-        Report report = new ProgrammersReport(store);
+        Report report = new HTMLReport(store);
         String result = report.generate(employee -> employee.getName().equals("Bob"));
         assertThat(result, is(expected));
     }
