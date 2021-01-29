@@ -15,7 +15,7 @@ public class ThirdWrongLSP {
         }
     }
 
-    private static class SquareRectangle extends Rectangle{
+    private static class SquareRectangle extends Rectangle {
         public SquareRectangle(int a, int b) {
             super(a, b);
         }

@@ -15,7 +15,7 @@ public class SecondWrongLSP {
         }
     }
 
-    private static class Dog extends Animal{
+    private static class Dog extends Animal {
         public Dog(int speed) {
             super(speed);
         }
@@ -30,7 +30,7 @@ public class SecondWrongLSP {
         }
     }
 
-    private static class Cat extends Animal{
+    private static class Cat extends Animal {
         public Cat(int speed) {
             super(speed);
         }
