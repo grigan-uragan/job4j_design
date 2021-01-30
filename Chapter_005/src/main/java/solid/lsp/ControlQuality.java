@@ -2,43 +2,33 @@ package solid.lsp;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 public class ControlQuality {
-    private Store store;
+    private List<Store> stores;
     private Food food;
 
     public ControlQuality(Food food) {
         this.food = food;
     }
 
-    public Store getStore() {
-        return store;
+    public List<Store> getStores() {
+        return stores;
     }
 
-    public void setStore(Store store) {
-        this.store = store;
-    }
-
-    private double controlDate() {
-        long lifeCircle = food.getExpireDate().getTime() - food.getCreateDate().getTime();
-        long timeAfterCreate = new Date().getTime() - food.getCreateDate().getTime();
-        return (double) timeAfterCreate / lifeCircle;
+    public void setStores(List<Store> stores) {
+        this.stores = stores;
     }
 
     public void logistic() {
-        double foodQuality = controlDate();
-        if (foodQuality < 0.25) {
-            setStore(new WareHouse());
-            store.add(food);
-        } else if (foodQuality > 0.25 && foodQuality < 1d) {
-            setStore(new Shop());
-            if (foodQuality > 0.75) {
-                food.setDiscount(0.5);
+        if (stores == null) {
+            throw new IllegalStateException("add store");
+        }
+        for (Store store : stores) {
+            if (store.accept(food)) {
+                store.add(food);
+                break;
             }
-            store.add(food);
-        } else {
-            setStore(new Trash());
-            store.add(food);
         }
     }
 
@@ -50,6 +40,7 @@ public class ControlQuality {
         Date exp = calendar.getTime();
         Food cheese = new Food("cheese", exp, create, 1000d, 0);
         ControlQuality controlQuality = new ControlQuality(cheese);
+        controlQuality.setStores(List.of(new Trash(), new Shop(), new WareHouse()));
         controlQuality.logistic();
     }
 }
