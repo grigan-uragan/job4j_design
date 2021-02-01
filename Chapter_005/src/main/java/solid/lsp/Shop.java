@@ -1,7 +1,6 @@
 package solid.lsp;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class Shop implements Store {
@@ -15,9 +14,7 @@ public class Shop implements Store {
 
     @Override
     public boolean accept(Food food) {
-        long lifeCircle = food.getExpireDate().getTime() - food.getCreateDate().getTime();
-        long timeAfterCreate = new Date().getTime() - food.getCreateDate().getTime();
-        double result = (double) timeAfterCreate / lifeCircle;
+       double result = this.getFreshness(food);
         if (result > 0.75 && result < 1d) {
             food.setDiscount(0.5d);
         }
