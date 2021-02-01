@@ -2,7 +2,7 @@ package solid.lsp;
 
 public interface Parking {
 
-    void parkIn(Auto auto);
+    boolean parkIn(Auto auto);
 
-    void parkOut(Auto auto);
+    boolean parkOut(Auto auto);
 }
