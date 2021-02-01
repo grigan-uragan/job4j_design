@@ -2,8 +2,8 @@ package solid.lsp;
 
 public class ThirdWrongLSP {
     private static class Rectangle {
-        protected int a;
-        protected int b;
+        private int a;
+        private int b;
 
         public Rectangle(int a, int b) {
             this.a = a;
@@ -12,6 +12,14 @@ public class ThirdWrongLSP {
 
         public void square() {
             System.out.println(a * b);
+        }
+
+        public int getA() {
+            return a;
+        }
+
+        public int getB() {
+            return b;
         }
     }
 
@@ -22,7 +30,7 @@ public class ThirdWrongLSP {
 
         @Override
         public void square() {
-            System.out.println(a * a);
+            System.out.println(this.getA() * this.getA());
         }
     }
 

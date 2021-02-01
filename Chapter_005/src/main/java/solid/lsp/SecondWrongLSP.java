@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SecondWrongLSP {
     private static class Animal {
-        protected int speed;
+        private int speed;
 
         public Animal(int speed) {
             this.speed = speed;
@@ -12,6 +12,10 @@ public class SecondWrongLSP {
 
         public void move() {
             System.out.println("move " + speed);
+        }
+
+        public int getSpeed() {
+            return speed;
         }
     }
 
@@ -21,7 +25,7 @@ public class SecondWrongLSP {
         }
 
         public void run() {
-            System.out.println("run " + speed);
+            System.out.println("run " + this.getSpeed());
         }
 
         @Override
@@ -36,10 +40,10 @@ public class SecondWrongLSP {
         }
 
         public void jump() {
-            if (speed < 5) {
+            if (this.getSpeed() < 5) {
                 throw new IllegalArgumentException("cats more faster");
             }
-            System.out.println("jump " + speed);
+            System.out.println("jump " + this.getSpeed());
         }
 
         @Override
@@ -49,7 +53,7 @@ public class SecondWrongLSP {
     }
 
     public static void main(String[] args) {
-        Cat cat = new Cat(3);
+        Cat cat = new Cat(13);
         Dog dog = new Dog(4);
         List<Animal> animals = List.of(cat, dog);
         animals.forEach(Animal::move);
