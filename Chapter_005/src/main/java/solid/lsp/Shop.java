@@ -4,7 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Shop implements Store {
-    private List<Food> foods = new ArrayList<>();
+    private List<Food> foods;
+
+    public Shop(List<Food> foods) {
+        this.foods = foods;
+    }
+
+    public static Shop getEmptyInstance() {
+        return new Shop(new ArrayList<>());
+    }
 
     @Override
     public void add(Food food) {
@@ -19,5 +27,10 @@ public class Shop implements Store {
             food.setDiscount(0.5d);
         }
         return result > 0.25 && result < 1d;
+    }
+
+    @Override
+    public List<Food> getAll() {
+        return foods;
     }
 }
