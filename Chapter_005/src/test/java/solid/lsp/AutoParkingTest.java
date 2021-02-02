@@ -38,4 +38,20 @@ public class AutoParkingTest {
         assertThat(false, is(parking.parkIn(truck)));
     }
 
+    @Test
+    public void shouldCarGoAwayFromParking() {
+        Auto car = new Car("Toyota");
+        Parking parking = new AutoParking(1, 0);
+        parking.parkIn(car);
+        assertThat(true, is(parking.parkOut(car)));
+    }
+
+    @Test
+    public void shouldTruckGoAwayFromParking() {
+        Auto truck = new Truck("Volvo", 2);
+        Parking parking = new AutoParking(2, 0);
+        parking.parkIn(truck);
+        assertThat(true, is(parking.parkOut(truck)));
+    }
+
 }
