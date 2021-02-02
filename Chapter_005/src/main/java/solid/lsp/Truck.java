@@ -5,14 +5,16 @@ import java.util.Objects;
 public class Truck implements Auto {
 
     private String carModel;
+    private int carSize;
 
-    public Truck(String carModel) {
+    public Truck(String carModel, int carSize) {
         this.carModel = carModel;
+        this.carSize = carSize;
     }
 
     @Override
     public int size() {
-        return 2;
+        return carSize;
     }
 
     public String getCarModel() {
