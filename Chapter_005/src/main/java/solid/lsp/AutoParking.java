@@ -12,11 +12,8 @@ public class AutoParking implements Parking {
     @Override
     public boolean parkIn(Auto auto) {
         if (auto.size() > 1) {
-            for (int i = 0; i < truckPlace.length; i++) {
-                if (truckPlace[i] == null) {
-                    truckPlace[i] = auto;
-                    return true;
-                }
+            if (parkingMove(truckPlace, null, auto)) {
+                return true;
             }
             int carSize = auto.size();
             for (int i = 0; i < carPlace.length; i++) {
@@ -28,11 +25,8 @@ public class AutoParking implements Parking {
                 }
             }
         } else  {
-            for (int i = 0; i < carPlace.length; i++) {
-                if (carPlace[i] == null) {
-                    carPlace[i] = auto;
-                    return true;
-                }
+            if (parkingMove(carPlace, null, auto)) {
+                return true;
             }
         }
        return false;
@@ -42,13 +36,9 @@ public class AutoParking implements Parking {
     public boolean parkOut(Auto auto) {
         int carSize = auto.size();
         if (carSize > 1) {
-            for (int i = 0; i < truckPlace.length; i++) {
-               if (truckPlace[i].equals(auto)) {
-                   truckPlace[i] = null;
-                   return true;
-               }
+            if (parkingMove(truckPlace, auto, null)) {
+                return true;
             }
-
             for (int i = 0; i < carPlace.length; i++) {
                 if (carPlace[i].equals(auto)) {
                     carPlace[i] = null;
@@ -59,11 +49,8 @@ public class AutoParking implements Parking {
                 }
             }
         } else {
-            for (int i = 0; i < carPlace.length; i++) {
-                if (carPlace[i].equals(auto)) {
-                    carPlace[i] = null;
-                    return true;
-                }
+            if (parkingMove(carPlace, auto, null)) {
+                return true;
             }
         }
         return false;
@@ -87,5 +74,15 @@ public class AutoParking implements Parking {
         for (int i = start; i < size; i++) {
             carPlace[i] = auto;
         }
+    }
+
+    private boolean parkingMove(Auto[] parking, Auto target, Auto forChange) {
+        for (int i = 0; i < parking.length; i++) {
+            if (target != null && target.equals(parking[i]) || parking[i] == target) {
+                parking[i] = forChange;
+                return true;
+            }
+        }
+        return false;
     }
 }
